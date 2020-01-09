@@ -1,7 +1,6 @@
 require('dotenv/config');
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-unresolved
-// const { NamingStrategy } = require('./dist/common/naming.strategy');
+const { SnakeNamingStrategy } = require('typeorm-snake-naming-strategy');
 
 const { DATABASE_URL, DATABASE_SSL } = process.env;
 
@@ -17,6 +16,7 @@ module.exports = {
       }
     : {}),
   entities: ['dist/**/*.entity{.ts,.js}'],
+  // 开启同步，自动创建数据表
   synchronize: true,
-  // namingStrategy: new NamingStrategy(),
+  namingStrategy: new SnakeNamingStrategy(),
 };
