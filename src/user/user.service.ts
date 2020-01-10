@@ -11,5 +11,24 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  // public register() {}
+  public async register(input) {
+    const data = JSON.parse(JSON.stringify(input));
+    const result = await this.userRepository.save(data);
+    // console.log('1111', result);
+    return result;
+  }
+
+  public async findUser(id: number): Promise<User> {
+    const result = await this.userRepository.findOne(id, {
+      // relations: ['articles'],
+    });
+    // console.log(result);
+    return result;
+  }
+
+  public async findAll(): Promise<User[]> {
+    const result = await this.userRepository.find();
+    console.log(result);
+    return result;
+  }
 }

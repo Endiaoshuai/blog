@@ -18,17 +18,21 @@ import { Article } from '../article/article.entity';
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export class User {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   public id: number;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   public email: string;
 
   @Column()
   public password: string;
+
+  @Field()
+  @Column({ nullable: true })
+  public name: string;
 
   @Field()
   @CreateDateColumn()
@@ -58,6 +62,7 @@ export class User extends BaseEntity {
   @OneToMany(
     () => Article,
     article => article.user,
+    { eager: true },
   )
-  public articles: Article[];
+  public articles?: Article[];
 }

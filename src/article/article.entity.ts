@@ -26,7 +26,7 @@ export class Article extends BaseEntity {
   public title: string;
 
   @Field()
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   public content: string;
 
   @Field(() => User)
