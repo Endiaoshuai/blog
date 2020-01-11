@@ -11,8 +11,10 @@ import { UserService } from './user.service';
 
 @Resolver(() => User)
 export class UserResolver {
+  // eslint-disable-next-line no-useless-constructor
   constructor(private readonly userService: UserService) {}
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   @Mutation(() => User)
   public async register(@Args('input') input: RegisterInput) {
     // const result = await User.create(input).save();
