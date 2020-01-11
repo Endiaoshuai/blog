@@ -5,6 +5,7 @@ import { LoginPayload } from './dtos/login-payload.dto';
 
 @Resolver('Auth')
 export class AuthResolver {
+  // eslint-disable-next-line no-useless-constructor
   public constructor(private readonly authService: AuthService) {}
 
   @Mutation(() => LoginPayload)

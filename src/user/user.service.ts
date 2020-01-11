@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigModule } from 'src/config/config.module';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
 import { Repository } from 'typeorm';
+
+import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
+  // eslint-disable-next-line no-useless-constructor
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -32,6 +33,17 @@ export class UserService {
   public async findAll(): Promise<User[]> {
     const result = await this.userRepository.find();
     // console.log(result);
+    return result;
+  }
+
+  public async updateUser(input): Promise<User> {
+    // const user = new User();
+    console.log('222222222');
+    const user = await this.userRepository.findOne(input.id);
+    user.password = input.password;
+    user.name = input.name;
+    const result = await user.save();
+    console.log(result);
     return result;
   }
 }

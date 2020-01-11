@@ -1,12 +1,13 @@
-import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { ID } from 'type-graphql';
+import { HttpException, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Arg, ID } from 'type-graphql';
 
 import { AuthGuard } from '../auth/auth.guard';
-import { User } from './user.entity';
-import { RegisterInput } from './dtos/register-input.dto';
-import { UserService } from './user.service';
 import { CurrentUser } from './current-user.decorator';
+import { RegisterInput } from './dtos/register-input.dto';
+import { UpdateUserInput } from './dtos/update-user-input.dto';
+import { User } from './user.entity';
+import { UserService } from './user.service';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -31,12 +32,25 @@ export class UserResolver {
 
   @UseGuards(AuthGuard)
   @Query(() => [User])
-  public async users(@CurrentUser() user: User): Promise<User[]> {
+  public async users(): Promise<User[]> {
     const result = await this.userService.findAll();
     return result;
   }
 
-  // 更新用户信息，需要有auth
+  @UseGuards(AuthGuard)
   @Mutation(() => User)
-  public async updateUser() {}
+  public async updateUser(
+    @CurrentUser() user: User,
+    @Args('updateUser') input: UpdateUserInput,
+  ): Promise<User> {
+    if (!input.password || input.password !== input.re_Password) {
+      throw new HttpException('重复密码不一致', 400);
+    }
+    const result = await this.userService.updateUser({
+      id: user.id,
+      password: input.password,
+      name: input.name,
+    });
+    return result;
+  }
 }

@@ -1,7 +1,9 @@
+/* eslint-disable no-useless-constructor */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { User } from 'src/user/user.entity';
+
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class AuthService {
