@@ -1,0 +1,40 @@
+# mutation {
+#   # register(input:{email:"455@qq.com", password: "123", name: "hzs"}) {
+#   #   id name createAt
+#   # }
+
+#   # login(email:"455@qq.com", password: "123") {
+#   #   token, user {
+#   #     id, email, name
+#   #   }
+#   # }
+
+#   # updateUser(updateUser: {password:"123", re_Password:"1233",name:"rose"}) {
+#   #   id email name
+#   # }
+#   # article(createArticle: {title:"天气", content:"今天好天气哦！"}) {
+#   #   id, title, content
+#   # }
+#   # updateArticle(updateArticle: {id: 17, title: "新闻11", content: "宇宙大爆炸"}) {
+#   #   id title content
+#   # }
+#   removeArticle(id: 21) {
+#     id, title, content
+#   }
+# }
+
+query {
+  users {
+    id
+    email
+    name
+    articles {
+      id
+      title
+    }
+  }
+
+  # articles(userId:1) {
+  #   id title content
+  # }
+}
