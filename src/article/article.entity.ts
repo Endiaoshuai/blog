@@ -29,8 +29,7 @@ export class Article extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   public content: string;
 
-  @Field(() => User)
-  // @Column({ nullable: false })
+  // @Field(() => User, { nullable: true })
   @ManyToOne(
     () => User,
     user => user.articles,

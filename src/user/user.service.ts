@@ -26,7 +26,6 @@ export class UserService {
     const result = await this.userRepository.findOne(id, {
       // relations: ['articles'],
     });
-    console.log(result);
     return result;
   }
 
@@ -38,12 +37,10 @@ export class UserService {
 
   public async updateUser(input): Promise<User> {
     // const user = new User();
-    console.log('222222222');
     const user = await this.userRepository.findOne(input.id);
     user.password = input.password;
     user.name = input.name;
     const result = await user.save();
-    console.log(result);
     return result;
   }
 }

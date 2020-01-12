@@ -1,6 +1,11 @@
-import { HttpException, UseGuards } from '@nestjs/common';
+import {
+  HttpException,
+  UseGuards,
+  HttpStatus,
+  BadRequestException,
+} from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Arg, ID } from 'type-graphql';
+import { ID } from 'type-graphql';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { CurrentUser } from './current-user.decorator';
@@ -46,7 +51,8 @@ export class UserResolver {
     @Args('updateUser') input: UpdateUserInput,
   ): Promise<User> {
     if (!input.password || input.password !== input.re_Password) {
-      throw new HttpException('重复密码不一致', 400);
+      // throw new HttpException('重复密码不一致', 400);
+      throw new BadRequestException('重复密码不一致', 'BadRequestException');
     }
     const result = await this.userService.updateUser({
       id: user.id,
