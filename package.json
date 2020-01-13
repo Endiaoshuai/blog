@@ -81,6 +81,7 @@
     "eslint-plugin-simple-import-sort": "^5.0.0",
     "husky": "^4.0.7",
     "jest": "^24.9.0",
+    "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "^24.1.0",
@@ -93,6 +94,16 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{json,js,jsx,ts,tsx,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "jest": {
     "moduleFileExtensions": [
