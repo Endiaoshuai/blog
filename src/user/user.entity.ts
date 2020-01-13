@@ -1,5 +1,4 @@
 import * as bcrypt from 'bcryptjs';
-
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
   AfterLoad,
@@ -7,11 +6,11 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Column,
-  Entity,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { Article } from '../article/article.entity';

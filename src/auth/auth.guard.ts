@@ -5,7 +5,8 @@ import { IncomingMessage } from 'http';
 
 @Injectable()
 export class AuthGuard extends BaseAuthGuard('jwt') {
-  public getRequest(context: ExecutionContext): any {
+  // eslint-disable-next-line class-methods-use-this
+  public getRequest(context: ExecutionContext): IncomingMessage {
     const ctx = GqlExecutionContext.create(context);
     // console.log('authguard-------', ctx.getContext().req.headers);
     return ctx.getContext().req;

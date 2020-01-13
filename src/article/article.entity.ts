@@ -1,15 +1,12 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
-  AfterLoad,
   BaseEntity,
-  BeforeInsert,
-  BeforeUpdate,
   Column,
-  Entity,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { User } from '../user/user.entity';

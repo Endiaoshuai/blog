@@ -1,12 +1,11 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, RelationId } from 'typeorm';
+import { Repository } from 'typeorm';
 
+import { User } from '../user/user.entity';
 import { Article } from './article.entity';
 import { ArticleInput } from './dtos/article-input.dto';
 import { ArticleUpdateInput } from './dtos/article-update-input.dto';
-
-import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class ArticleService {
@@ -25,7 +24,7 @@ export class ArticleService {
   public async updateArticle(
     input: ArticleUpdateInput,
     user: User,
-  ): Promise<any> {
+  ): Promise<Article> {
     const article = await this.articleRepository.findOne({
       where: { id: input.id, user },
     });

@@ -1,4 +1,4 @@
-import { Field, InputType, ID } from 'type-graphql';
+import { Field, InputType } from 'type-graphql';
 
 @InputType()
 export class ArticleInput {
@@ -7,5 +7,4 @@ export class ArticleInput {
 
   @Field()
   public content: string;
-
 }

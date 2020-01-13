@@ -1,17 +1,12 @@
-import {
-  HttpException,
-  UseGuards,
-  HttpStatus,
-  BadRequestException,
-} from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ID } from 'type-graphql';
 
-import { ArticleService } from './article.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { CurrentUser } from '../user/current-user.decorator';
 import { User } from '../user/user.entity';
 import { Article } from './article.entity';
+import { ArticleService } from './article.service';
 import { ArticleInput } from './dtos/article-input.dto';
 import { ArticleUpdateInput } from './dtos/article-update-input.dto';
 
@@ -43,7 +38,7 @@ export class ArticleResolver {
   public async removeArticle(
     @CurrentUser() user: User,
     @Args({ name: 'id', type: () => ID }) id: number,
-  ) {
+  ): Promise<Article> {
     const result = await this.articleService.removeArticle(id, user);
     return result;
   }
