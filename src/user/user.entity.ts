@@ -61,7 +61,7 @@ export class User extends BaseEntity {
   @OneToMany(
     () => Article,
     article => article.user,
-    { eager: true },
+    // { eager: true },
   )
   public articles?: Article[];
 }

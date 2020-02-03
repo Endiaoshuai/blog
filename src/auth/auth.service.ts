@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-constructor */
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 
@@ -14,7 +14,7 @@ export class AuthService {
     if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }
-    return null;
+    throw new BadRequestException('账号或密码错误！', 'BadRequestException');
   }
 
   public async generateToken(user: User): Promise<string> {

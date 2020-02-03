@@ -1,5 +1,6 @@
 require('dotenv/config');
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { SnakeNamingStrategy } = require('typeorm-snake-naming-strategy');
 
 const { DATABASE_URL, DATABASE_SSL } = process.env;

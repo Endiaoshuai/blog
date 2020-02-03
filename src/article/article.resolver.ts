@@ -1,25 +1,36 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveProperty,
+  Resolver,
+} from '@nestjs/graphql';
 import { ID } from 'type-graphql';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { CurrentUser } from '../user/current-user.decorator';
 import { User } from '../user/user.entity';
+import { UserService } from '../user/user.service';
 import { Article } from './article.entity';
 import { ArticleService } from './article.service';
 import { ArticleInput } from './dtos/article-input.dto';
 import { ArticleUpdateInput } from './dtos/article-update-input.dto';
 
 @UseGuards(AuthGuard)
-@Resolver('Article')
+@Resolver(() => User)
 export class ArticleResolver {
   // eslint-disable-next-line no-useless-constructor
-  constructor(private readonly articleService: ArticleService) {}
+  constructor(
+    private readonly articleService: ArticleService,
+    private readonly userService: UserService,
+  ) {}
 
   @Mutation(() => Article)
-  public async article(
+  public async createArticle(
     @CurrentUser() user: User,
-    @Args('createArticle') input: ArticleInput,
+    @Args('input') input: ArticleInput,
   ): Promise<Article> {
     const result = await this.articleService.article(input, user);
     return result;
@@ -28,7 +39,7 @@ export class ArticleResolver {
   @Mutation(() => Article)
   public async updateArticle(
     @CurrentUser() user: User,
-    @Args('updateArticle') input: ArticleUpdateInput,
+    @Args('input') input: ArticleUpdateInput,
   ): Promise<Article> {
     const result = await this.articleService.updateArticle(input, user);
     return result;
@@ -43,12 +54,17 @@ export class ArticleResolver {
     return result;
   }
 
-  // 其实查找user的时候就可以选择展示articles
   @Query(() => [Article])
   public async articles(
     @Args({ name: 'userId', type: () => ID }) userId: number,
   ): Promise<Article[]> {
     const result = await this.articleService.articles(userId);
     return result;
+  }
+
+  @ResolveProperty()
+  public async user(@Parent() article: Article): Promise<User> {
+    const data = await this.userService.findUser(article.user.id);
+    return data;
   }
 }

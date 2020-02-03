@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Authorized, Field, ID, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -26,7 +26,7 @@ export class Article extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   public content: string;
 
-  // @Field(() => User, { nullable: true })
+  @Field(() => User)
   @ManyToOne(
     () => User,
     user => user.articles,

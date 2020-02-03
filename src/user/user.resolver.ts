@@ -1,27 +1,34 @@
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  UseGuards,
-} from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveProperty,
+  Resolver,
+} from '@nestjs/graphql';
 import { ID } from 'type-graphql';
 
+import { Article } from '../article/article.entity';
+import { ArticleService } from '../article/article.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { CurrentUser } from './current-user.decorator';
-import { RegisterInput } from './dtos/register-input.dto';
-import { UpdateUserInput } from './dtos/update-user-input.dto';
+import { RegisterInput } from './dtos/register.input';
+import { UpdateUserInput } from './dtos/update-user-input';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
 @Resolver(() => User)
 export class UserResolver {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly articleService: ArticleService,
+  ) {
+    return this;
+  }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   @Mutation(() => User)
-  public async register(@Args('input') input: RegisterInput) {
+  public async register(@Args('input') input: RegisterInput): Promise<User> {
     // const result = await User.create(input).save();
     // return result;
     const result = await this.userService.register(input);
@@ -37,6 +44,13 @@ export class UserResolver {
     return result;
   }
 
+  // 检测到查询的字段里有 articles 他会自动执行该方法
+  @ResolveProperty()
+  public async articles(@Parent() user: User): Promise<Article[]> {
+    const articles = await this.articleService.articles(user.id);
+    return articles;
+  }
+
   @UseGuards(AuthGuard)
   @Query(() => [User])
   public async users(): Promise<User[]> {
@@ -48,7 +62,7 @@ export class UserResolver {
   @Mutation(() => User)
   public async updateUser(
     @CurrentUser() user: User,
-    @Args('updateUser') input: UpdateUserInput,
+    @Args('input') input: UpdateUserInput,
   ): Promise<User> {
     if (!input.password || input.password !== input.re_Password) {
       // throw new HttpException('重复密码不一致', 400);
