@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import * as DataLoader from 'dataloader';
+import { getRepository, In, Repository } from 'typeorm';
 
 import { User } from './user.entity';
 
@@ -29,9 +30,21 @@ export class UserService {
     return result;
   }
 
-  public async findAll(): Promise<User[]> {
-    const result = await this.userRepository.find();
+  // public load() {
+  //   const userLoader = new DataLoader(keys =>
+  //     this.userRepository.find({ where: { id: { $in: keys } } }),
+  //   );
+  //   return userLoader;
+  // }
+
+  userLoader = new DataLoader(keys => {
+    return getRepository(User).find({ where: { name: In(['tom']) } });
+  });
+
+  public async findAll(): Promise<any> {
+    // const result = await this.userRepository.find();
     // console.log(result);
+    const result = await this.userLoader.load('tom');
     return result;
   }
 

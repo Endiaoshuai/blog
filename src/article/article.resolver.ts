@@ -19,7 +19,7 @@ import { ArticleInput } from './dtos/article-input.dto';
 import { ArticleUpdateInput } from './dtos/article-update-input.dto';
 
 @UseGuards(AuthGuard)
-@Resolver(() => User)
+@Resolver(() => Article)
 export class ArticleResolver {
   // eslint-disable-next-line no-useless-constructor
   constructor(
