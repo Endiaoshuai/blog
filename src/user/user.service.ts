@@ -30,21 +30,10 @@ export class UserService {
     return result;
   }
 
-  // public load() {
-  //   const userLoader = new DataLoader(keys =>
-  //     this.userRepository.find({ where: { id: { $in: keys } } }),
-  //   );
-  //   return userLoader;
-  // }
+  public async findAll(): Promise<User[]> {
+    const result = await this.userRepository.find();
+    console.log(result);
 
-  userLoader = new DataLoader(keys => {
-    return getRepository(User).find({ where: { name: In(['tom']) } });
-  });
-
-  public async findAll(): Promise<any> {
-    // const result = await this.userRepository.find();
-    // console.log(result);
-    const result = await this.userLoader.load('tom');
     return result;
   }
 
