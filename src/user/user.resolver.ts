@@ -8,6 +8,7 @@ import {
   ResolveProperty,
   Resolver,
 } from '@nestjs/graphql';
+import * as DataLoader from 'dataloader';
 import { ID } from 'type-graphql';
 
 import { Article } from '../article/article.entity';
@@ -18,8 +19,7 @@ import { RegisterInput } from './dtos/register.input';
 import { UpdateUserInput } from './dtos/update-user-input';
 import { User } from './user.entity';
 import { UserService } from './user.service';
-// import DataLoader from 'dataloader';
-import DataLoader = require('dataloader');
+// import DataLoader = require('dataloader');
 
 @Resolver(() => User)
 export class UserResolver {
@@ -47,19 +47,12 @@ export class UserResolver {
     return result;
   }
 
-  // 检测到查询的字段里有 articles 他会自动执行该方法
-  // @ResolveProperty()
-  // public async articles(@Parent() user: User): Promise<Article[]> {
-  //   const articles = await this.articleService.articles(user.id);
-  //   return articles;
-  // }
-
   @ResolveProperty()
   public async articles(
     @Parent() user: User,
     @Context('ArticleLoaderByUserId') loader: DataLoader<number, Article[]>,
   ): Promise<Article[]> {
-    console.log('111111111111', loader);
+    console.log('3333', await loader.load(38));
     const result = await loader.load(user.id);
     return result;
   }

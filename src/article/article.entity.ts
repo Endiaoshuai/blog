@@ -1,9 +1,10 @@
-import { Authorized, Field, ID, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -26,12 +27,16 @@ export class Article extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   public content: string;
 
+  @Column()
+  public userId: number;
+
   @Field(() => User)
   @ManyToOne(
     () => User,
     user => user.articles,
     { onDelete: 'CASCADE' },
   )
+  @JoinColumn({ name: 'userId' })
   public user: User;
 
   @Field()

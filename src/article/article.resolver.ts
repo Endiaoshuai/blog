@@ -64,7 +64,7 @@ export class ArticleResolver {
 
   @ResolveProperty()
   public async user(@Parent() article: Article): Promise<User> {
-    const data = await this.userService.findUser(article.user.id);
+    const data = await this.userService.findUser(article.userId);
     return data;
   }
 }

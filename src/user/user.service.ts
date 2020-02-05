@@ -32,8 +32,6 @@ export class UserService {
 
   public async findAll(): Promise<User[]> {
     const result = await this.userRepository.find();
-    console.log(result);
-
     return result;
   }
 

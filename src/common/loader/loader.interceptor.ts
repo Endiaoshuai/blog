@@ -16,7 +16,7 @@ const generateDataLoaders = () => {
   return {
     UserLoaderById: new UserLoaderById().generateDataLoader(),
     // BookLoaderById: new BookLoaderById().generateDataLoader(),
-    BookLoaderByUserId: new ArticleLoaderByUserId().generateDataLoader(),
+    ArticleLoaderByUserId: new ArticleLoaderByUserId().generateDataLoader(),
   };
 };
 
@@ -29,7 +29,7 @@ export class LoaderInterceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     const gqlExecutionContext = GqlExecutionContext.create(context);
     const ctx = gqlExecutionContext.getContext();
-
+    console.log('6666666666666666666666666666');
     const loaders = generateDataLoaders();
 
     Object.keys(loaders).forEach(key => {

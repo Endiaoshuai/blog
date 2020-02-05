@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 import { getRepository, In } from 'typeorm';
 
-import { ILoader } from '../../graphql/loader/loader.interface';
+import { ILoader } from '../../common/loader/loader.interface';
 import { Article } from '../article.entity';
 
 @Injectable()
