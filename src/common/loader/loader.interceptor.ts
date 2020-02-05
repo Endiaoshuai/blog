@@ -7,7 +7,7 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
 
-// import { BookLoaderById } from '../../core/book/loader/by_id.loader';
+import { ArticleLoaderById } from '../../article/loader/by_id.loader';
 import { ArticleLoaderByUserId } from '../../article/loader/by_user_id.loader';
 import { UserLoaderById } from '../../user/loader/by_id.loader';
 
@@ -15,7 +15,7 @@ import { UserLoaderById } from '../../user/loader/by_id.loader';
 const generateDataLoaders = () => {
   return {
     UserLoaderById: new UserLoaderById().generateDataLoader(),
-    // BookLoaderById: new BookLoaderById().generateDataLoader(),
+    ArticleLoaderById: new ArticleLoaderById().generateDataLoader(),
     ArticleLoaderByUserId: new ArticleLoaderByUserId().generateDataLoader(),
   };
 };
