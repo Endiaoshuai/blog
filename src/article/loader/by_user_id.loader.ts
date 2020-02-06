@@ -12,7 +12,6 @@ export class ArticleLoaderByUserId implements ILoader {
     return new DataLoader<number, Article[]>(this.findByUserId);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   // eslint-disable-next-line class-methods-use-this
   private async findByUserId(ids: number[]) {
     console.log(ids);

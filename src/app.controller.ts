@@ -4,8 +4,9 @@ import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) {
+    return this;
+  }
 
   @Get()
   getHello(): string {

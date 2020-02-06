@@ -5,8 +5,9 @@ import { LoginPayload } from './dtos/login-payload';
 
 @Resolver('Auth')
 export class AuthResolver {
-  // eslint-disable-next-line no-useless-constructor
-  public constructor(private readonly authService: AuthService) {}
+  public constructor(private readonly authService: AuthService) {
+    return this;
+  }
 
   @Mutation(() => LoginPayload)
   public async login(

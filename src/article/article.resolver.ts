@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import {
   Args,
+  Context,
   Mutation,
   Parent,
   Query,
@@ -12,27 +13,26 @@ import { ID } from 'type-graphql';
 import { AuthGuard } from '../auth/auth.guard';
 import { CurrentUser } from '../user/current-user.decorator';
 import { User } from '../user/user.entity';
-import { UserService } from '../user/user.service';
 import { Article } from './article.entity';
 import { ArticleService } from './article.service';
 import { ArticleInput } from './dtos/article-input.dto';
 import { ArticleUpdateInput } from './dtos/article-update-input.dto';
 
+import DataLoader = require('dataloader');
+
 @UseGuards(AuthGuard)
 @Resolver(() => Article)
 export class ArticleResolver {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(
-    private readonly articleService: ArticleService,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly articleService: ArticleService) {
+    return this;
+  }
 
   @Mutation(() => Article)
   public async createArticle(
     @CurrentUser() user: User,
     @Args('input') input: ArticleInput,
   ): Promise<Article> {
-    const result = await this.articleService.article(input, user);
+    const result = await this.articleService.createArticle(input, user);
     return result;
   }
 
@@ -54,6 +54,14 @@ export class ArticleResolver {
     return result;
   }
 
+  @Query(() => Article)
+  public async article(
+    @Args({ name: 'id', type: () => ID }) id: number,
+  ): Promise<Article> {
+    const result = await this.articleService.article(id);
+    return result;
+  }
+
   @Query(() => [Article])
   public async articles(
     @Args({ name: 'userId', type: () => ID }) userId: number,
@@ -63,8 +71,11 @@ export class ArticleResolver {
   }
 
   @ResolveProperty()
-  public async user(@Parent() article: Article): Promise<User> {
-    const data = await this.userService.findUser(article.userId);
-    return data;
+  public async user(
+    @Parent() article: Article,
+    @Context('UserLoaderById') loader: DataLoader<number, User>,
+  ): Promise<User> {
+    const result = await loader.load(article.userId);
+    return result;
   }
 }

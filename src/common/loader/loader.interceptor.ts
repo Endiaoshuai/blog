@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   CallHandler,
   ExecutionContext,
@@ -29,7 +30,6 @@ export class LoaderInterceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     const gqlExecutionContext = GqlExecutionContext.create(context);
     const ctx = gqlExecutionContext.getContext();
-    console.log('6666666666666666666666666666');
     const loaders = generateDataLoaders();
 
     Object.keys(loaders).forEach(key => {

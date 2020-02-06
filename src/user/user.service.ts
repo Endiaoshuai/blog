@@ -7,11 +7,12 @@ import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
-  // eslint-disable-next-line no-useless-constructor
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
+  ) {
+    return this;
+  }
 
   public async register(input): Promise<User> {
     const data = JSON.parse(JSON.stringify(input));

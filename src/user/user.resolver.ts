@@ -52,7 +52,6 @@ export class UserResolver {
     @Parent() user: User,
     @Context('ArticleLoaderByUserId') loader: DataLoader<number, Article[]>,
   ): Promise<Article[]> {
-    console.log('3333', await loader.load(38));
     const result = await loader.load(user.id);
     return result;
   }

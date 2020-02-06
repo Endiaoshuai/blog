@@ -7,7 +7,9 @@ import { User } from '../user/user.entity';
 
 @Injectable()
 export class AuthService {
-  public constructor(private readonly jwtService: JwtService) {}
+  public constructor(private readonly jwtService: JwtService) {
+    return this;
+  }
 
   public async validateUser(email: string, password: string): Promise<User> {
     const user = await User.findOne({ where: { email } });

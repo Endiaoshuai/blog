@@ -9,15 +9,23 @@ import { ArticleUpdateInput } from './dtos/article-update-input.dto';
 
 @Injectable()
 export class ArticleService {
-  // eslint-disable-next-line no-useless-constructor
   constructor(
     @InjectRepository(Article)
     private readonly articleRepository: Repository<Article>,
-  ) {}
+  ) {
+    return this;
+  }
 
-  public async article(input: ArticleInput, user: User): Promise<Article> {
+  public async createArticle(
+    input: ArticleInput,
+    user: User,
+  ): Promise<Article> {
     const result = await this.articleRepository.save({ ...input, user });
-    // console.log('111', result);
+    return result;
+  }
+
+  public async article(id: number): Promise<Article> {
+    const result = await this.articleRepository.findOne(id);
     return result;
   }
 
