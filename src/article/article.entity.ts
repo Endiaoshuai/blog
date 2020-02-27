@@ -36,7 +36,6 @@ export class Article extends BaseEntity {
     user => user.articles,
     { onDelete: 'CASCADE' },
   )
-  @JoinColumn({ name: 'userId' })
   public user: User;
 
   @Field()
